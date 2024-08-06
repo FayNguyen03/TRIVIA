@@ -15,10 +15,10 @@ constraintlayout = "2.1.4"
 navigationFragment = "2.7.7"
 roomCommon = "2.6.1"
 firebaseCrashlyticsBuildtools = "3.0.0"
+volleyVersion = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-asynchttpclient = { module = "com.codepath.libraries:asynchttpclient", version.ref = "asynchttpclient" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -31,6 +31,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+volley = {group = "com.android.volley", name = "volley", version.ref = "volleyVersion"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
