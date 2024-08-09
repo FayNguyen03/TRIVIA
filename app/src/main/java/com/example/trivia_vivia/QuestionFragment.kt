@@ -20,10 +20,13 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 
 class QuestionFragment: Fragment() {
-
+    //database operation
     private lateinit var questionDao: QuestionDao
+    //elements
     private lateinit var view: View
     var answerButtons = mutableListOf<Button>()
+    private lateinit var nextButton: Button
+    //logic check
     private lateinit var correct: String
     var correctIndex:Int = 0
 
@@ -47,17 +50,35 @@ class QuestionFragment: Fragment() {
         (0 until answerViews.size).forEach { i ->
             answerButtons.add(view.findViewById<Button>(answerViews[i]))
         }
+        nextButton = view.findViewById(R.id.next_button)
         questionDao = AppDatabase.getInstance(context).questionDao()
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        questionAdapter()
+        nextButton.setOnClickListener {
+            questionAdapter()
+        }
+
+
+    }
+
+    private fun questionAdapter(){
+        answerButtons.forEach { button ->
+            button.setBackgroundResource(R.drawable.button_answer)
+        }
         fetchAndDisplayQuestion()
         //listeners for buttons
 
         answerButtons.forEachIndexed { index, button ->
             button.setOnClickListener{
+                nextButton.isClickable = true
+                //disable buttons
+                answerButtons.forEach { button ->
+                    button.setOnClickListener(null)
+                }
                 val clickedAnswer = button.text.toString()
                 val isCorrect = checkAnswer(clickedAnswer)
                 answerButtons[correctIndex].setBackgroundResource(R.drawable.correct_button_answer)
@@ -67,7 +88,6 @@ class QuestionFragment: Fragment() {
                 }
             }
         }
-
     }
 
     private fun fetchAndDisplayQuestion() {
