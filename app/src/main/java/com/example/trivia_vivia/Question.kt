@@ -17,22 +17,20 @@ data class QuestionsResponse(
 @Serializable
 data class Question(
     @SerialName("id")
-    val id: String?,
+    val id: String,
     @SerialName("category")
     val category: String?,
     @SerialName("correctAnswer")
     val correctAnswer: String?,
-    @SerialName("incorrectAnswers")
-    val incorrectAnswers: List<String>?,
+    @SerialName("inAnswers")
+    val inAnswers: String?,
     @SerialName("question")
-    val question: Int?,
+    val question: String?,
     @SerialName("tags")
-    val tags: List<String>?,
+    val tags: String?,
     @SerialName("type")
     val type: String?,
     @SerialName("difficulty")
-    val difficulty: String?,
-    @SerialName("isNiche")
-    val isNiche: Boolean?
+    val difficulty: String?
 )
 
