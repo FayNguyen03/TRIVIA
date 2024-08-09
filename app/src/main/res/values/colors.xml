@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="columbia_blue">#B9D9EB</color>
     <color name="orchid_pink">#F2BDCD</color>
+    <color name="green">#50C878</color>
+    <color name="red">#FF0000</color>
 </resources>

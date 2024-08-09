@@ -20,8 +20,21 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 
 class QuestionFragment: Fragment() {
+
     private lateinit var questionDao: QuestionDao
     private lateinit var view: View
+    var answerButtons = mutableListOf<Button>()
+    private lateinit var correct: String
+    var correctIndex:Int = 0
+
+    //List of answer buttons
+    val answerViews = listOf(
+        R.id.questView_answer_1,
+        R.id.questView_answer_2,
+        R.id.questView_answer_3,
+        R.id.questView_answer_4
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,7 +42,11 @@ class QuestionFragment: Fragment() {
     ): View? {
         view = inflater.inflate(R.layout.quiz_view, container, false)
         val context = view.context
-        val layoutManager = LinearLayoutManager(context)
+        //val layoutManager = LinearLayoutManager(context)
+        //add buttons to the answer button list
+        (0 until answerViews.size).forEach { i ->
+            answerButtons.add(view.findViewById<Button>(answerViews[i]))
+        }
         questionDao = AppDatabase.getInstance(context).questionDao()
         return view
     }
@@ -37,6 +54,20 @@ class QuestionFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fetchAndDisplayQuestion()
+        //listeners for buttons
+
+        answerButtons.forEachIndexed { index, button ->
+            button.setOnClickListener{
+                val clickedAnswer = button.text.toString()
+                val isCorrect = checkAnswer(clickedAnswer)
+                answerButtons[correctIndex].setBackgroundResource(R.drawable.correct_button_answer)
+                //incorrect answer
+                if (!isCorrect){
+                    answerButtons[index].setBackgroundResource(R.drawable.incorrect_button_answer)
+                }
+            }
+        }
+
     }
 
     private fun fetchAndDisplayQuestion() {
@@ -66,16 +97,11 @@ class QuestionFragment: Fragment() {
     //function that displays a question (DONE)
     private fun displayQuestion(questionEntity: QuestionEntity){
         val converter = Converter()
-        //List of answer buttons
-        val answerViews = listOf(
-            R.id.questView_answer_1,
-            R.id.questView_answer_2,
-            R.id.questView_answer_3,
-            R.id.questView_answer_4
-        )
+
         val incorrectAnswers = converter.fromString(questionEntity.inAnswers)
         val correctAnswer = questionEntity.correctAnswer.toString()
-
+        correct = correctAnswer
+        //List of answers
         var answers:MutableList<String> = mutableListOf()
         if (incorrectAnswers != null) {
             (0 until incorrectAnswers.size).forEach { i ->
@@ -88,12 +114,26 @@ class QuestionFragment: Fragment() {
         //Shuffle the list
         answers.shuffle()
 
-        Log.d("Binding",view.toString())
+        //Log.d("Binding",view.toString())
         //Paste the question
             view.findViewById<TextView?>(R.id.questView_question)?.text = questionEntity.question
         //A list in Kotlin using size instead of length
         (0 until answers.size).forEach { i ->
             view.findViewById<TextView>(answerViews[i])?.text = answers[i]
+            if (answers[i] == correct){
+                correctIndex = i
+            }
         }
     }
+
+    private fun checkAnswer(clickedAnswer: String): Boolean {
+        val isCorrect = clickedAnswer == correct
+        if (isCorrect) {
+            Toast.makeText(context, "Correct Answer!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Incorrect! The correct answer is $correct", Toast.LENGTH_SHORT).show()
+        }
+        return isCorrect
+    }
+
 }
