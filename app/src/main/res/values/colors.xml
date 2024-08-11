@@ -6,4 +6,14 @@
     <color name="orchid_pink">#F2BDCD</color>
     <color name="green">#50C878</color>
     <color name="red">#FF0000</color>
+    <color name="blue">#0000FF</color>
+    <color name="gray">#808080</color>
+    //chip colors
+    <color name="chip_color_1">#FFEB00</color>
+    <color name="chip_color_2">#FF9800</color>
+    <color name="chip_color_3">#FF5722</color>
+    <color name="chip_color_4">#795548</color>
+    //transparent
+    <color name="transparent">#00000000</color>
+
 </resources>

@@ -102,6 +102,7 @@ class MainActivity : AppCompatActivity() {
             },
             { error ->
                 Toast.makeText(this, "Failed to get response: $error", Toast.LENGTH_SHORT).show()
+                Log.e("API", "Failed to get response: $error")
             }
         )
 

@@ -14,7 +14,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -29,6 +32,10 @@ class QuestionFragment: Fragment() {
     //logic check
     private lateinit var correct: String
     var correctIndex:Int = 0
+    //question tag
+    private lateinit var chipGroupTags: ChipGroup
+    var converter = Converter()
+    //private lateinit var questionTag: List<String>
 
     //List of answer buttons
     val answerViews = listOf(
@@ -52,6 +59,7 @@ class QuestionFragment: Fragment() {
         }
         nextButton = view.findViewById(R.id.next_button)
         questionDao = AppDatabase.getInstance(context).questionDao()
+        chipGroupTags = view.findViewById(R.id.tag_chip_group)
         return view
     }
 
@@ -61,20 +69,20 @@ class QuestionFragment: Fragment() {
         nextButton.setOnClickListener {
             questionAdapter()
         }
-
-
     }
 
     private fun questionAdapter(){
         answerButtons.forEach { button ->
             button.setBackgroundResource(R.drawable.button_answer)
+            nextButton.text = "Skip"
         }
         fetchAndDisplayQuestion()
+
         //listeners for buttons
 
         answerButtons.forEachIndexed { index, button ->
             button.setOnClickListener{
-                nextButton.isClickable = true
+                nextButton.text = "Next"
                 //disable buttons
                 answerButtons.forEach { button ->
                     button.setOnClickListener(null)
@@ -90,7 +98,8 @@ class QuestionFragment: Fragment() {
         }
     }
 
-    private fun fetchAndDisplayQuestion() {
+    private fun fetchAndDisplayQuestion(){
+
         lifecycleScope.launch {
             try {
                 val questionCount = withContext(Dispatchers.IO) {
@@ -104,6 +113,7 @@ class QuestionFragment: Fragment() {
 
                 if (randomQuestion != null) {
                     displayQuestion(randomQuestion)
+                    //questionTag = converter.fromString(randomQuestion.tags) ?.toList()!!
                 } else {
                     Log.d("QuestionFragment", "No questions available in the database")
                 }
@@ -111,6 +121,7 @@ class QuestionFragment: Fragment() {
                 Log.e("QuestionFragment", "Error fetching random question: ${e.message}")
                 Toast.makeText(context, "Error loading question", Toast.LENGTH_SHORT).show()
             }
+
         }
     }
 
@@ -144,6 +155,36 @@ class QuestionFragment: Fragment() {
                 correctIndex = i
             }
         }
+        chipGroupTags.removeAllViews()
+        Log.d("Chip", questionEntity.tags.toString())
+        val questionTags = converter.fromString(questionEntity.tags)
+        //chipGroupTags.removeAllViews() // Clear existing chips
+
+        questionTags?.forEachIndexed { index, tag ->
+            Log.d("Chip", "Starting iteration for index $index")
+            Log.d("Chip", "Adding chip $index: $tag")
+            context?.let { ctx ->
+                Log.d("Chip", "Context is not null, creating chip")
+                try {
+                    Chip(ctx).apply {
+                        text = tag
+                        isClickable = false
+                        isCheckable = false
+                        Log.d("Chip", "Chip created, adding to chipGroupTags")
+                        chipGroupTags.addView(this)
+                        Log.d("Chip", "Chip added successfully")
+                    }
+                } catch (e: Exception) {
+                    Log.e("Chip", "Exception while creating or adding chip: ${e.message}")
+                }
+            } ?: run {
+                Log.e("Chip", "Context is null, can't create Chip for tag: $tag")
+            }
+            Log.d("Chip", "Finished iteration for index $index")
+        }
+        Log.d("Chip", "Loop completed")
+
+
     }
 
     private fun checkAnswer(clickedAnswer: String): Boolean {

@@ -26,6 +26,13 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        dataBinding {
+            enable = true
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -53,4 +60,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.volley)
+    implementation(libs.android.material)
 }

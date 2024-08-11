@@ -1,10 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.TRIVIA_VIVIA" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.TRIVIA_VIVIA" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">@null</item>
-    </style>
 
+    </style>
     <style name="Theme.TRIVIA_VIVIA" parent="Base.Theme.TRIVIA_VIVIA" />
+    <!-- Custom style for ChipGroup -->
+    <style name="MyChipGroupStyle" parent="Widget.MaterialComponents.ChipGroup">
+        <item name="chipSpacing">8dp</item>
+    </style>
+    <style name="Widget.MaterialComponents.Chip.Entry" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipCornerRadius">50dp</item> </style>
 </resources>
