@@ -21,6 +21,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
+import kotlin.random.Random
 
 class QuestionFragment: Fragment() {
     //database operation
@@ -43,6 +44,12 @@ class QuestionFragment: Fragment() {
         R.id.questView_answer_2,
         R.id.questView_answer_3,
         R.id.questView_answer_4
+    )
+
+    //List of chip colors
+    val colorTags = listOf(
+        R.color.orchid_pink,
+        R.color.columbia_blue
     )
 
     override fun onCreateView(
@@ -161,8 +168,8 @@ class QuestionFragment: Fragment() {
         //chipGroupTags.removeAllViews() // Clear existing chips
 
         questionTags?.forEachIndexed { index, tag ->
-            Log.d("Chip", "Starting iteration for index $index")
-            Log.d("Chip", "Adding chip $index: $tag")
+            //Log.d("Chip", "Starting iteration for index $index")
+            //Log.d("Chip", "Adding chip $index: $tag")
             context?.let { ctx ->
                 Log.d("Chip", "Context is not null, creating chip")
                 try {
@@ -170,9 +177,10 @@ class QuestionFragment: Fragment() {
                         text = tag
                         isClickable = false
                         isCheckable = false
-                        Log.d("Chip", "Chip created, adding to chipGroupTags")
+                        setChipBackgroundColorResource(colorTags[index % 2])
+                        //Log.d("Chip", "Chip created, adding to chipGroupTags")
                         chipGroupTags.addView(this)
-                        Log.d("Chip", "Chip added successfully")
+                        //Log.d("Chip", "Chip added successfully")
                     }
                 } catch (e: Exception) {
                     Log.e("Chip", "Exception while creating or adding chip: ${e.message}")
@@ -180,9 +188,8 @@ class QuestionFragment: Fragment() {
             } ?: run {
                 Log.e("Chip", "Context is null, can't create Chip for tag: $tag")
             }
-            Log.d("Chip", "Finished iteration for index $index")
+            //Log.d("Chip", "Finished iteration for index $index")
         }
-        Log.d("Chip", "Loop completed")
 
 
     }
@@ -196,5 +203,6 @@ class QuestionFragment: Fragment() {
         }
         return isCorrect
     }
+    //update score
 
 }

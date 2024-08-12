@@ -5,20 +5,22 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:padding="0dp">
+
 
     <FrameLayout
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/coordinator_layout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/coordinator_layout"
-        app:layout_constraintVertical_bias="0.1">
-    </FrameLayout>
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
@@ -32,33 +34,47 @@
             android:id="@+id/bottom_app"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/orchid_pink"
+            android:backgroundTint="@null"
             android:gravity="bottom"
+            android:layout_gravity="bottom"
             app:fabCradleMargin="10dp"
-            app:fabCradleRoundedCornerRadius="50dp">
+            app:fabCradleRoundedCornerRadius="50dp"
+            app:fabCradleVerticalOffset="10dp"
+            app:fabAlignmentMode="center"
+            app:hideOnScroll="true"
+            app:backgroundTint="@color/orchid_pink"
+            app:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:background="@color/transparent"
+                app:backgroundTint="@color/orchid_pink"
                 app:itemIconTint="@color/bottom_nav_colors"
+                app:itemTextColor="@color/bottom_nav_colors"
                 app:labelVisibilityMode="labeled"
-                app:menu="@menu/bottom_nav_menu">
-            </com.google.android.material.bottomnavigation.BottomNavigationView>
+                app:menu="@menu/bottom_nav_menu"/>
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="40dp"
             android:backgroundTint="@color/orchid_pink"
             android:contentDescription="Home"
+            android:elevation="20dp"
+            android:translationZ="20dp"
+
+            android:visibility="visible"
+            app:layout_anchor="@id/bottom_app"
+            app:layout_anchorGravity="top|center"
             app:maxImageSize="40dp"
-            app:srcCompat="@drawable/home_icon">
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+            app:rippleColor="@color/columbia_blue"
+            app:srcCompat="@drawable/home_icon" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

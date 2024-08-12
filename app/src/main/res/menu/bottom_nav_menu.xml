@@ -9,9 +9,9 @@
         android:title="Trivia"
         app:showAsAction="always" />
     <item
-        android:id="@+id/statistics_conclusion"
+        android:id="@+id/statistics"
         android:enabled="true"
-        android:icon="@drawable/baseline_query_stats_24"
+        android:icon="@drawable/baseline_bar_chart_24"
         android:title="Statistics"
         app:showAsAction="always" />
     <item
@@ -19,5 +19,11 @@
         android:enabled="true"
         android:icon="@drawable/baseline_settings_24"
         android:title="Settings"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/questions_saved"
+        android:enabled="true"
+        android:icon="@drawable/baseline_collections_bookmark_24"
+        android:title="Quest List"
         app:showAsAction="always" />
 </menu>
