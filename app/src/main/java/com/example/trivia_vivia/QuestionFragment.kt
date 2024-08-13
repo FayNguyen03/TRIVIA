@@ -2,10 +2,13 @@ package com.example.trivia_vivia
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -35,9 +38,11 @@ class QuestionFragment: Fragment() {
     var correctIndex:Int = 0
     //question tag
     private lateinit var chipGroupTags: ChipGroup
+    //question difficulty
+    private lateinit var difficulty: String
     var converter = Converter()
     //private lateinit var questionTag: List<String>
-
+    var SCORE: Int = 0
     //List of answer buttons
     val answerViews = listOf(
         R.id.questView_answer_1,
@@ -45,7 +50,8 @@ class QuestionFragment: Fragment() {
         R.id.questView_answer_3,
         R.id.questView_answer_4
     )
-
+    //list of difficulty score
+    val difficultyMap = hashMapOf("hard" to 5, "medium" to 3, "easy" to 1)
     //List of chip colors
     val colorTags = listOf(
         R.color.orchid_pink,
@@ -101,6 +107,11 @@ class QuestionFragment: Fragment() {
                 if (!isCorrect){
                     answerButtons[index].setBackgroundResource(R.drawable.incorrect_button_answer)
                 }
+                else{
+                    SCORE += difficultyMap[difficulty.lowercase()]!!
+                    view.findViewById<TextView>(R.id.current_score_text)?.text = SCORE.toString()
+
+                }
             }
         }
     }
@@ -135,7 +146,7 @@ class QuestionFragment: Fragment() {
     //function that displays a question (DONE)
     private fun displayQuestion(questionEntity: QuestionEntity){
         val converter = Converter()
-
+        difficulty = questionEntity.difficulty.toString()
         val incorrectAnswers = converter.fromString(questionEntity.inAnswers)
         val correctAnswer = questionEntity.correctAnswer.toString()
         correct = correctAnswer

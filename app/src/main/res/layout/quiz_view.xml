@@ -1,23 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment"
+    android:background="@drawable/theme_color">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/tag_chip_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
+        app:chipSpacingHorizontal="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/questView_question"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/questView_question"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:text="Question: "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/questView_answer_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tag_chip_group" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/questView_answer_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_answer"
+        android:text="A1"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/questView_answer_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/questView_question" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/questView_answer_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_answer"
+        android:text="A2"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/questView_answer_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/questView_answer_1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/questView_answer_3"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_answer"
+        android:text="A3"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/questView_answer_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/questView_answer_2" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/questView_answer_4"
+        style="MyMaterialButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_answer"
+        android:text="A4"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/score_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/questView_answer_3" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/score_card"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/light_gray"
         app:cardCornerRadius="10dp"
-        app:layout_constraintBottom_toTopOf="@id/questView_question"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/next_button"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/questView_answer_4">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,8 +127,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Scoreboard"
-                android:textSize="18sp"
+                android:text="SCOREBOARD"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -40,127 +138,27 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:text="0"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 android:textStyle="bold" />
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:layout_marginTop="16dp"
-                android:progress="0"
-                android:progressTint="@color/blue" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/questView_question"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="169dp"
-        android:layout_marginBottom="73dp"
-        android:text="Question: "
-        app:layout_constraintBottom_toTopOf="@+id/questView_answer_1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/questView_answer_2"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="81dp"
-        app:backgroundTint="@null"
-        android:background="@drawable/button_answer"
-        android:text="A2"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questView_answer_1" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/questView_answer_1"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginEnd="81dp"
-        app:backgroundTint="@null"
-        android:background="@drawable/button_answer"
-        android:text="A1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/questView_question" />
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/questView_answer_3"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="81dp"
-        app:backgroundTint="@null"
-        android:background="@drawable/button_answer"
-        android:text="A3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questView_answer_2" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/questView_answer_4"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="81dp"
-        android:layout_marginBottom="58dp"
-        app:backgroundTint="@null"
-        android:background="@drawable/button_answer"
-        android:text="A4"
-        style="MyMaterialButtonStyle"
-        app:layout_constraintBottom_toTopOf="@id/tag_chip_group"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questView_answer_3" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/next_button"
         style="MyMaterialButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="307dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/columbia_blue"
         android:clickable="false"
         android:text="Skip"
-        app:layout_constraintBottom_toTopOf="@id/questView_question"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/tag_chip_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="129dp"
-        android:layout_marginTop="58dp"
-        android:layout_marginEnd="130dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questView_answer_4">
-
-    </com.google.android.material.chip.ChipGroup>
-
-
+        app:layout_constraintStart_toEndOf="@+id/score_card"
+        app:layout_constraintTop_toBottomOf="@id/questView_answer_4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,9 @@ import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,19 +25,32 @@ class MainActivity : AppCompatActivity() {
 
     private var API_URL = "https://the-trivia-api.com/v2/questions?limit=10"
     private lateinit var questionDao: QuestionDao
-
+    private lateinit var bottomNavigationView: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         // Initialize the Room database and DAO
         questionDao = AppDatabase.getInstance(this).questionDao()
-
-        // Delete all existing questions in a background thread
+        // Fetch the question
         lifecycleScope.launch(Dispatchers.IO) {
             //questionDao.deleteAll()
             fetchQuestions()
         }
+        // Initialize the bottom navigation view
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        val fragmentManager: FragmentManager = supportFragmentManager
+        val questionFragment: Fragment = QuestionFragment()
+        val settingFragment: Fragment = SettingFragment()
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            lateinit var fragment: Fragment
+            when (item.itemId) {
+                R.id.question -> fragment = questionFragment
+                R.id.settings -> fragment = settingFragment
+            }
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit()
+            true
+        }
+        bottomNavigationView.selectedItemId = R.id.question
     }
 
     private fun fetchQuestions() {
@@ -92,9 +108,6 @@ class MainActivity : AppCompatActivity() {
                             Log.d("Database", "Added successfully " + i.toString())
                         }
 
-                        withContext(Dispatchers.Main) {
-                            startQuestionFragment()
-                        }
                     } catch (e: Exception) {
                         Log.e("Database", "Error inserting questions: ${e.message}")
                     }
@@ -109,12 +122,5 @@ class MainActivity : AppCompatActivity() {
         queue.add(request)
     }
 
-    private fun startQuestionFragment() {
-        val fragmentManager: FragmentManager = supportFragmentManager
-        val fragment: Fragment = QuestionFragment()
 
-        fragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment, fragment) // Use replace instead of add
-            .commit()
-    }
 }
