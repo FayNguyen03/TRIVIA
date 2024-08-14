@@ -23,7 +23,8 @@ import org.json.JSONException
 
 class MainActivity : AppCompatActivity() {
 
-    private var API_URL = "https://the-trivia-api.com/v2/questions?limit=10"
+    private var API_URL = "https://the-trivia-api.com/v2/questions"
+    //private var API_URL_IMG = "https://the-trivia-api.com/v2/questions?types=image_choice"
     private lateinit var questionDao: QuestionDao
     private lateinit var bottomNavigationView: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {

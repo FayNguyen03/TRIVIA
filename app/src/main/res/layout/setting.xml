@@ -143,7 +143,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:text="Image Answer"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:clickable="false"/>
 
                     <RadioButton
                         android:id="@+id/text_radio"
@@ -158,7 +159,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Both"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:clickable="false"/>
                 </RadioGroup>
 
 
@@ -194,7 +196,15 @@
 
 
             </LinearLayout>
-
+            <TextView
+                android:id="@+id/api_footer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/powered_by_the_trivia_api"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="8dp" />
         </LinearLayout>
 
     </ScrollView>

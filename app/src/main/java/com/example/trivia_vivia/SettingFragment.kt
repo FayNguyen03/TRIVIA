@@ -2,6 +2,7 @@ package com.example.trivia_vivia
 
 import android.content.Context
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,11 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.Switch
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 
 class SettingFragment: Fragment() {
     private lateinit var view: View
@@ -25,6 +28,7 @@ class SettingFragment: Fragment() {
     private lateinit var bothTypeRadio: RadioButton
     val radioButtons = listOf(R.id.img_radio, R.id.text_radio, R.id.both_radio)
     private lateinit var rateAppButton: Button
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,6 +66,9 @@ class SettingFragment: Fragment() {
         answerTypeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
             saveAnswerType(checkedId)}
 
+        val apiAttributionTextView = view.findViewById<TextView>(R.id.api_footer)
+        apiAttributionTextView.movementMethod = LinkMovementMethod.getInstance()
+
         return view
     }
 
@@ -93,6 +100,7 @@ class SettingFragment: Fragment() {
     }
 
     private fun saveDifficulty(position: Int) {
+        sharedViewModel.selectedDifficulty = position
         val sharedPrefs = requireActivity().getSharedPreferences("app_settings", Context.MODE_PRIVATE)
         with(sharedPrefs.edit()) {
             putInt("difficulty", position)
@@ -107,7 +115,7 @@ class SettingFragment: Fragment() {
             R.id.both_radio -> "both"
             else -> "text" // Default to text if none selected
         }
-
+        sharedViewModel.selectedAnswerType = answerType
         val sharedPrefs = requireActivity().getSharedPreferences("app_settings", Context.MODE_PRIVATE)
         with(sharedPrefs.edit()) {
             putString("answer_type", answerType)

@@ -1,5 +1,6 @@
 package com.example.trivia_vivia
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -11,7 +12,9 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -35,12 +38,14 @@ class QuestionFragment: Fragment() {
     private lateinit var nextButton: Button
     //logic check
     private lateinit var correct: String
-    var correctIndex:Int = 0
+    var correctIndex: Int = 0
     //question tag
     private lateinit var chipGroupTags: ChipGroup
-    //question difficulty
-    private lateinit var difficulty: String
-    var converter = Converter()
+    private var difficulty: Int = 0
+    private var answerType: String = "text"
+    private lateinit var level: String
+    private lateinit var scoreCard: CardView
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     //private lateinit var questionTag: List<String>
     var SCORE: Int = 0
     //List of answer buttons
@@ -73,11 +78,14 @@ class QuestionFragment: Fragment() {
         nextButton = view.findViewById(R.id.next_button)
         questionDao = AppDatabase.getInstance(context).questionDao()
         chipGroupTags = view.findViewById(R.id.tag_chip_group)
+        scoreCard = view.findViewById(R.id.score_card)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        answerType = sharedViewModel.selectedAnswerType
+        difficulty = sharedViewModel.selectedDifficulty
         questionAdapter()
         nextButton.setOnClickListener {
             questionAdapter()
@@ -106,9 +114,10 @@ class QuestionFragment: Fragment() {
                 //incorrect answer
                 if (!isCorrect){
                     answerButtons[index].setBackgroundResource(R.drawable.incorrect_button_answer)
+
                 }
                 else{
-                    SCORE += difficultyMap[difficulty.lowercase()]!!
+                    SCORE += difficultyMap[level.lowercase()]!!
                     view.findViewById<TextView>(R.id.current_score_text)?.text = SCORE.toString()
 
                 }
@@ -116,6 +125,7 @@ class QuestionFragment: Fragment() {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun fetchAndDisplayQuestion(){
 
         lifecycleScope.launch {
@@ -126,7 +136,18 @@ class QuestionFragment: Fragment() {
                 Log.d("QuestionFragment", "Total questions in database: $questionCount")
 
                 val randomQuestion = withContext(Dispatchers.IO) {
-                    questionDao.getRandomQuestion()
+                    if (difficulty == 3){
+                        questionDao.getRandomQuestion()
+                    }
+                    else if(difficulty == 0){
+                        questionDao.getRandomQuestionEasy()
+                    }
+                    else if(difficulty == 1){
+                        questionDao.getRandomQuestionMedium()
+                    }
+                    else{
+                        questionDao.getRandomQuestionHard()
+                    }
                 }
 
                 if (randomQuestion != null) {
@@ -146,7 +167,16 @@ class QuestionFragment: Fragment() {
     //function that displays a question (DONE)
     private fun displayQuestion(questionEntity: QuestionEntity){
         val converter = Converter()
-        difficulty = questionEntity.difficulty.toString()
+        level = questionEntity.difficulty.toString()
+        if (level == "easy" || level == ""){
+            scoreCard.setCardBackgroundColor(getResources().getColor(R.color.antique_white))
+        }
+        else if (level == "medium"){
+            scoreCard.setCardBackgroundColor(getResources().getColor(R.color.columbia_blue))
+        }
+        else if(level == "hard"){
+            scoreCard.setCardBackgroundColor(getResources().getColor(R.color.red))
+        }
         val incorrectAnswers = converter.fromString(questionEntity.inAnswers)
         val correctAnswer = questionEntity.correctAnswer.toString()
         correct = correctAnswer
@@ -162,15 +192,13 @@ class QuestionFragment: Fragment() {
         answers.add(correctAnswer)
         //Shuffle the list
         answers.shuffle()
-
-        //Log.d("Binding",view.toString())
-        //Paste the question
-            view.findViewById<TextView?>(R.id.questView_question)?.text = questionEntity.question
+        view.findViewById<TextView?>(R.id.questView_question)?.text = questionEntity.question
         //A list in Kotlin using size instead of length
         (0 until answers.size).forEach { i ->
             view.findViewById<TextView>(answerViews[i])?.text = answers[i]
             if (answers[i] == correct){
                 correctIndex = i
+                Log.d("Correct",i.toString())
             }
         }
         chipGroupTags.removeAllViews()
@@ -199,7 +227,6 @@ class QuestionFragment: Fragment() {
             } ?: run {
                 Log.e("Chip", "Context is null, can't create Chip for tag: $tag")
             }
-            //Log.d("Chip", "Finished iteration for index $index")
         }
 
 
@@ -214,6 +241,5 @@ class QuestionFragment: Fragment() {
         }
         return isCorrect
     }
-    //update score
 
 }

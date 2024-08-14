@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TRIVIA_VIVIA</string>
+    <string name="powered_by_the_trivia_api"><![CDATA[Powered by <a href=\"https://the-trivia-api.com\">The Trivia API</a>\n]]></string>
 </resources>
