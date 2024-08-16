@@ -40,7 +40,7 @@
 
 ### 2. Screen Archetypes
 
-- [list first screen here]
+- ![Quiz View.png](Quiz%20View.png)
     - [list associated required story here]
     - ...
 - [list second screen here]
